@@ -1,0 +1,13 @@
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\bin\Debug\cgmDisp.exe.config
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\bin\Debug\cgmDisp.exe
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\bin\Debug\cgmDisp.pdb
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.csprojAssemblyReference.cache
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.Form1.resources
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.Properties.Resources.resources
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.csproj.GenerateResource.cache
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.csproj.CoreCompileInputs.cache
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.exe
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.pdb
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Debug\cgmDisp.csproj.CopyComplete
