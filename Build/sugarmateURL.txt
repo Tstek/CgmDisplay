@@ -1,0 +1,1 @@
+https://sugarmate.io/api/v1/-----/latest.json
