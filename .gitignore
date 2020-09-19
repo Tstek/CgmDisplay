@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+*.exe
+*.pdb
+/cgmDisp/bin/Release/Newtonsoft.Json.dll
+/cgmDisp/bin/Release/Newtonsoft.Json.xml
+/cgmDisp/bin/Debug/Newtonsoft.Json.dll
+/cgmDisp/bin/Debug/Newtonsoft.Json.xml
+/cgmDisp/bin/Debug/cgmDisp.exe.config
+/cgmDisp/bin/Release/cgmDisp.exe.config
+/cgmDisp/bin/Debug/sugarmateURL.txt
+/.vs/cgmDisp/v15/Server/sqlite3/db.lock
