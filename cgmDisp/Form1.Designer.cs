@@ -56,7 +56,7 @@
             this.labelTime.AutoSize = true;
             this.labelTime.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(151)))), ((int)(((byte)(31)))));
-            this.labelTime.Location = new System.Drawing.Point(24, 65);
+            this.labelTime.Location = new System.Drawing.Point(12, 65);
             this.labelTime.Name = "labelTime";
             this.labelTime.Size = new System.Drawing.Size(72, 19);
             this.labelTime.TabIndex = 6;
@@ -68,7 +68,7 @@
             this.labelDelta.AutoSize = true;
             this.labelDelta.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDelta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(151)))), ((int)(((byte)(31)))));
-            this.labelDelta.Location = new System.Drawing.Point(138, 14);
+            this.labelDelta.Location = new System.Drawing.Point(121, 14);
             this.labelDelta.Name = "labelDelta";
             this.labelDelta.Size = new System.Drawing.Size(45, 32);
             this.labelDelta.TabIndex = 5;
@@ -79,7 +79,7 @@
             this.labelGlucose.AutoSize = true;
             this.labelGlucose.Font = new System.Drawing.Font("Consolas", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelGlucose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(151)))), ((int)(((byte)(31)))));
-            this.labelGlucose.Location = new System.Drawing.Point(21, 9);
+            this.labelGlucose.Location = new System.Drawing.Point(9, 9);
             this.labelGlucose.Name = "labelGlucose";
             this.labelGlucose.Size = new System.Drawing.Size(113, 41);
             this.labelGlucose.TabIndex = 4;

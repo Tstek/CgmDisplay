@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net;
 using System.IO;
 using Newtonsoft.Json;
-using System.Windows.Forms.DataVisualization.Charting;
 
 //Icons made by'Pixel perfect' from www.flaticon.com
 
@@ -25,15 +17,26 @@ namespace cgmDisp
             InitializeComponent();
             try
             {
-                sugarmateURL = File.ReadAllText(".//sugarmateURL.txt");
+                string configJson = File.ReadAllText(".//nightscoutConfig.json");
+
+                NightscoutConfig config = JsonConvert.DeserializeObject<NightscoutConfig>(configJson);
+                nightscout = new NightscoutAPI(config.baseUrl, config.token);
             }
             catch (Exception e)
             {
-                MessageBox.Show(string.Format("{0}\n{1}", "Error: Could not read sugarmateURL.txt", e.Message));
+                MessageBox.Show(string.Format("{0}\n{1}", "Error: Could not read nightscoutConfig.json", e.Message));
             }
-            
+
             panelBackGround.MouseDown += PanelBackGround_MouseDown;
             panelBackGround.Select();
+
+            trendArrows.Add("Flat", "→");
+            trendArrows.Add("SingleUp", "↑");
+            trendArrows.Add("SingleDown", "↓");
+            trendArrows.Add("FortyFiveUp", "↗");
+            trendArrows.Add("FortyDiveDown", "↘");
+            trendArrows.Add("DoubleUp", "↑↑");
+            trendArrows.Add("DoubleDown", "↓↓");
 
             _updateThread = new Thread(GetVals);
             _updateThread.IsBackground = true;
@@ -42,46 +45,33 @@ namespace cgmDisp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(sugarmateURL))
+            if (nightscout == null)
             {
                 this.Close();
             }
         }
 
-        private readonly string sugarmateURL;
+        NightscoutAPI nightscout = null;
+        private Dictionary<string, string> trendArrows = new Dictionary<string, string>();
         private Thread _updateThread;
-        delegate void dSetText(Control ctrl, string text);
-        private void SetText(Control ctrl, string text)
-        {
-            if(ctrl.InvokeRequired)
-            {
-                dSetText dst = new dSetText(SetText);
-                ctrl.Invoke(dst, new object[] { ctrl, text });
-            }
-            else
-            {
-                ctrl.Text = text;
-            }
-        }
+    
 
         private void GetVals()
         {
-           while(true)
-           {
+            while (true)
+            {
                 try
                 {
                     DateTime nextRead = DateTime.Now.AddMinutes(1.0); //just in case the http call fails/junk is returned (if sugar mate is down or something we'll only try every minute instead of every 5 seconds
                     try
                     {
-                        string resp = HttpsGet(sugarmateURL);
+                        string resp = nightscout.GetLatest(1);
                         if (!string.IsNullOrWhiteSpace(resp))
                         {
-                            CgmData data = JsonConvert.DeserializeObject<CgmData>(resp);
-                            SetText(labelGlucose, string.Format("{0} {1}", data.value, data.trend_symbol));
-                            SetText(labelDelta, string.Format("{0}{1}", (data.delta >0 ? "+" : ""), data.delta.ToString()));
-                            SetText(labelTime, data.time);
-                            DateTime dataTime = DateTime.Parse(data.timestamp);
-                            nextRead = dataTime.AddMinutes(5.4); //seems to be more accurate to when info is available than the sugarmate website by a few seconds, without needing to check each 5 secs
+                            CgmEntry[] entries = JsonConvert.DeserializeObject<CgmEntry[]>(resp);
+                            addVal(entries[0]);
+                            DateTime dataTime = DateTime.Parse(entries[0].dateString);
+                            nextRead = dataTime.AddMinutes(5.3); //seems to be more accurate to when info is available than the website by a few seconds, without needing to check each 5 secs
                         }
                     }
                     catch
@@ -95,32 +85,30 @@ namespace cgmDisp
                 catch { /* really dont care if this fails occasionally, just dont break */ }
             }
         }
+        private void addVal(CgmEntry data)
+        {
+            SetText(labelGlucose, string.Format("{0} {1}", data.sgv, trendArrows[data.direction])); //↓↘↑⇈⇊
+            SetText(labelDelta, string.Format("{0}{1}", (data.delta > 0 ? "+" : ""), data.delta.ToString("0.0")));
+            SetText(labelTime, DateTimeOffset.Parse(data.dateString).LocalDateTime.ToShortTimeString());
+        }
 
+        #region UI
+        delegate void dSetText(Control ctrl, string text);
+        private void SetText(Control ctrl, string text)
+        {
+            if (ctrl.InvokeRequired)
+            {
+                dSetText dst = new dSetText(SetText);
+                ctrl.Invoke(dst, new object[] { ctrl, text });
+            }
+            else
+            {
+                ctrl.Text = text;
+            }
+        }
         private void buttonClose_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private string HttpsGet(string url)
-        {
-            string retVal = "";
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream resStream = response.GetResponseStream();
-                byte[] buffer = new byte[1024];
-
-                int len = resStream.ReadAsync(buffer, 0, 1024).Result;
-                retVal = Encoding.UTF8.GetString(buffer, 0, len);
-                resStream.Dispose();
-                response.Dispose();
-            }
-            catch// (Exception e) //naahhhhh
-            {
-            //    MessageBox.Show(e.Message);
-            }
-            return retVal;
         }
 
         //this lets us hide the windows title bar (mostly just to make things smaller/mesh better in VR using XSOverlay)
@@ -139,6 +127,7 @@ namespace cgmDisp
                 this.FormBorderStyle = fbs;
             }
         }
+        #endregion UI
         #region MoveWithBackground
         //this lets us still move around the window while the titlebar is hidden by clicking and dragging the background
         public const int WM_NCLBUTTONDOWN = 0xA1;

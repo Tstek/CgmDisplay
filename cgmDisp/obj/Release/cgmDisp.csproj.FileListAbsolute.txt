@@ -11,3 +11,16 @@ C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Release\cgmDisp.csproj.CopyCompl
 C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Release\cgmDisp.exe
 C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Release\cgmDisp.pdb
 C:\Users\Tstek\source\repos\cgmDisp\cgmDisp\obj\Release\cgmDisp.csprojAssemblyReference.cache
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\bin\Release\cgmDisp.exe.config
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\bin\Release\cgmDisp.exe
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\bin\Release\cgmDisp.pdb
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\bin\Release\Newtonsoft.Json.dll
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\bin\Release\Newtonsoft.Json.xml
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.csproj.AssemblyReference.cache
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.Form1.resources
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.Properties.Resources.resources
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.csproj.GenerateResource.cache
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.csproj.CoreCompileInputs.cache
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.csproj.CopyComplete
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.exe
+C:\Users\Tstek\source\repos\CgmDisplay\cgmDisp\obj\Release\cgmDisp.pdb
