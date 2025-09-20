@@ -5,3 +5,6 @@
 /.vs/cgmDisp/v15/Server/sqlite3/db.lock
 *.exe
 /cgmDisp/bin/Debug/nightscoutConfig.json
+/cgmDisp/bin/Release/nightscoutConfig.json
+/.vs/cgmDisp
+/cgmDisp/.vs

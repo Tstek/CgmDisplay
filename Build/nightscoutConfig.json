@@ -1,0 +1,4 @@
+{
+  "baseUrl": "https://some.nightscout.website",
+  "token": "whateverTheTokenIs"
+}
