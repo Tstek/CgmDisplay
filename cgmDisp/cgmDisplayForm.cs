@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Linq;
 using System.Drawing;
+using System.CodeDom;
 
 //Icons made by 'Pixel perfect' from www.flaticon.com
 
@@ -78,36 +79,56 @@ namespace cgmDisp
         private Thread _updateThread;
     
         private void GetVals()
-        {            
+        {
             while (true)
             {
+                int fails = 0;
                 try
                 {
                     DateTime nextRead = DateTime.Now.AddMinutes(1.0); //just in case the http call fails/junk is returned (if nightscout is down or something we'll only try every minute instead of every 5 seconds
-                    try
+                    string resp = nightscout.GetLatest(1);
+                    if (!string.IsNullOrWhiteSpace(resp))
                     {
-                        string resp = nightscout.GetLatest(1);
-                        if (!string.IsNullOrWhiteSpace(resp))
+                        CgmEntry[] entries = JsonConvert.DeserializeObject<CgmEntry[]>(resp);
+                        addVal(entries[0]);
+                        DateTime dataTime = DateTime.Parse(entries[0].dateString);
+                        nextRead = dataTime.AddMinutes(5.3); //seems to be more accurate to when info is available than the website by a few seconds, without needing to check each 5 secs
+                        fails = 0;
+                    }
+                    if (nextRead <= DateTime.Now)
+                    {
+                        fails++;
+                        if (fails > 2)
                         {
-                            CgmEntry[] entries = JsonConvert.DeserializeObject<CgmEntry[]>(resp);
-                            addVal(entries[0]);
-                            DateTime dataTime = DateTime.Parse(entries[0].dateString);
-                            nextRead = dataTime.AddMinutes(5.3); //seems to be more accurate to when info is available than the website by a few seconds, without needing to check each 5 secs
+                            SetError(labelTime, true, Color.Red);
+                            SetError(labelGlucose, true, Color.Red);
+                            SetError(labelDelta, true, Color.Red);
+
                         }
-                    }
-                    catch
-                    {
-                        //guess it failed! probably home assistant is down/bad connection.
-                    }
-                    if (nextRead < DateTime.Now)
                         nextRead = DateTime.Now.AddSeconds(5.0); //if we checked 5 mins after last reading and it hasnt updated yet, check again in 5 seconds
+                    }
                     Thread.Sleep(nextRead - DateTime.Now);
                 }
-                catch { /* really hasn't been an issue if this fails occasionally, just dont break */ }
+                catch 
+                {
+                    fails++; 
+                    if (fails > 2)
+                    {
+                        SetError(labelTime, true, Color.Red);
+                        SetError(labelGlucose, true, Color.Red);
+                        SetError(labelDelta, true, Color.Red);
+
+                    }
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
+                }
             }
         }
         private void addVal(CgmEntry data)
         {
+            SetError(labelTime, false, Color.FromArgb(253, 151, 31));
+            SetError(labelGlucose, false, Color.FromArgb(253, 151, 31));
+            SetError(labelDelta, false, Color.FromArgb(253, 151, 31));
+
             SetText(labelGlucose, string.Format("{0} {1}", data.sgv, trendArrows[data.direction])); //↓↘↑⇈⇊
             SetText(labelDelta, string.Format("{0}{1}", (data.delta > 0 ? "+" : ""), data.delta.ToString("0.0")));
             SetText(labelTime, DateTimeOffset.Parse(data.dateString).LocalDateTime.ToShortTimeString());
@@ -131,6 +152,28 @@ namespace cgmDisp
             else
             {
                 ctrl.Text = text;
+            }
+        }
+
+        delegate void dSetError(Control ctrl, bool error, Color color);
+        private void SetError(Control ctrl, bool error, Color color)
+        {
+            if (ctrl.InvokeRequired)
+            {
+                dSetError dst = new dSetError(SetError);
+                ctrl.Invoke(dst, new object[] { ctrl, error, color });
+            }
+            else
+            {
+                ctrl.ForeColor = color;
+                if (error)
+                {
+                    ctrl.Font = new Font(ctrl.Font, FontStyle.Bold | FontStyle.Strikeout);
+                }
+                else
+                {
+                    ctrl.Font = new Font(ctrl.Font, FontStyle.Bold);
+                }
             }
         }
         enum category
