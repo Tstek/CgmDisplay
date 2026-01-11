@@ -112,13 +112,12 @@ namespace cgmDisp
                 catch 
                 {
                     fails++; 
-                    if (fails > 2)
-                    {
-                        SetError(labelTime, true, Color.Red);
-                        SetError(labelGlucose, true, Color.Red);
-                        SetError(labelDelta, true, Color.Red);
 
-                    }
+                    SetError(labelTime, true, Color.Red);
+                    SetError(labelGlucose, true, Color.Red);
+                    SetError(labelDelta, true, Color.Red);
+
+                    
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                 }
             }
